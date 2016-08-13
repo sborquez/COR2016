@@ -143,7 +143,7 @@ class Timer(Scene):
 
         # Cambiar estado de escena para volver a la escena principal.
         # Borrar puntero a Arduino.
-        if self.once_pressed(pygame.K_k):
+        if self.once_pressed(pygame.K_BACKSPACE):
             self.cambiar = True
             self.cronometro.kill()
             self.cronometro = None
@@ -160,7 +160,7 @@ class Timer(Scene):
 
     def once_pressed(self, key):
         """ Detecta si una tecla fue presionada una vez."""
-        
+
         if pygame.key.get_pressed()[key] and not self.pressed:
             self.pressed = True
             return True
