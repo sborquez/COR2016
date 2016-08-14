@@ -41,8 +41,8 @@ class Arduino:
             try:
                 self.arduinoPort = serial.Serial(COM[os.name]+str(num),
                                                  port, timeout=1)
-                print COM[os.name] + str(num), "- OK."
                 time.sleep(1.8)
+                print COM[os.name] + str(num), "- OK."
                 return True
             except:
                 pass

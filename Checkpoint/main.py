@@ -11,23 +11,26 @@ from cronometro.display import *
 import pygame
 from pygame.locals import *
 import sys
-        
+
+
 class Menu(Scene):
+
     """Ventana inicial.
 
     Presenta las opciones para conectarse, comenzar o salir del programa.
 
     """
+
     def __init__(self, MainFrame, Escenas):
         Scene.__init__(self, MainFrame)
 
         # Teclas presionadas.
-        self.pressed = {pygame.K_DOWN : False,
-                        pygame.K_UP : False,
-                        pygame.K_SPACE : False}
+        self.pressed = {pygame.K_DOWN: False,
+                        pygame.K_UP: False,
+                        pygame.K_SPACE: False}
 
-        # Escenas disponibles para cambiar. 
-        self.escenas = Escenas 
+        # Escenas disponibles para cambiar.
+        self.escenas = Escenas
 
         # Opcion seleccionada.
         self.opciones = 0
@@ -37,17 +40,17 @@ class Menu(Scene):
         self.cronometro = None
 
         # Datos para dibujar.
-        self.bg = load_image("recursos/imagenes/background1.jpg") 
+        self.bg = load_image("recursos/imagenes/background1.jpg")
         self.mensaje = "Conectar Arduino"
         self.punterox = WIDTH/4
         self.punteroy = 6*HEIGHT/8
 
     def on_update(self):
-        
+
         # En caso de conectarse, cambiar a la escena del cronometro.
         if self.arduino_connected == "ok":
             self.escenas["Timer"].cronometro = self.cronometro
-            self.cronometro=None
+            self.cronometro = None
             self.arduino_connected = "not tried"
             self.mensaje = "Conectar Arduino"
             self.director.change_scene(self.escenas["Timer"])
@@ -70,7 +73,7 @@ class Menu(Scene):
             self.opciones = abs(self.opciones-1)
 
         if self.once_pressed(pygame.K_UP):
-            self.opciones = (self.opciones + 1)%2
+            self.opciones = (self.opciones + 1) % 2
 
         # Seleccion de opcion a travez del teclado.
         if self.once_pressed(pygame.K_SPACE):
@@ -90,13 +93,14 @@ class Menu(Scene):
         screen.blit(self.bg, (0, 0))
 
         # Puntero.
-        pygame.draw.circle(screen, (0, 0, 0), (self.punterox, self.punteroy), 10)
+        pygame.draw.circle(
+            screen, (0, 0, 0), (self.punterox, self.punteroy), 10)
 
         # Textos.
         opcion1 = fuente.render(self.mensaje, 1, (0, 0, 0))
         opcion2 = fuente.render("Salir", 1, (0, 0, 0))
-        screen.blit(opcion1, (20+WIDTH/4, 6*HEIGHT/8 -10))
-        screen.blit(opcion2, (20+WIDTH/4, 7*HEIGHT/8 -10))
+        screen.blit(opcion1, (20+WIDTH/4, 6*HEIGHT/8 - 10))
+        screen.blit(opcion2, (20+WIDTH/4, 7*HEIGHT/8 - 10))
 
     def once_pressed(self, key):
         """ Detecta si una tecla fue presionada una vez."""
@@ -107,8 +111,11 @@ class Menu(Scene):
             self.pressed[key] = False
         return False
 
+
 class Timer(Scene):
+
     """Display de cronometro"""
+
     def __init__(self, MainFrame, Escenas):
         Scene.__init__(self, MainFrame)
 
@@ -119,8 +126,12 @@ class Timer(Scene):
         self.cronometro = None
 
         # Datos para Dibujar
-        self.bg = load_image("recursos/imagenes/background2.jpg") 
-        self.time = "00:00:00"
+        self.bg = load_image("recursos/imagenes/background2.jpg")
+        # Tiempo
+        self.runningtime = "Stand by"
+        self.backtime = self.runningtime
+        self.vuelta1 = "-"
+        self.vuelta2 = "-"
 
         # Estados de la escena.
         self.pressed = False
@@ -136,8 +147,11 @@ class Timer(Scene):
 
         # Actualizar datos del cronometro.
         else:
-            self.time = self.cronometro.getdata()
-
+            self.runningtime = self.cronometro.getdata()
+            if len(self.runningtime) == 0:
+                self.runningtime = self.backtime
+            else:
+                self.backtime = self.runningtime
     def on_event(self):
         """ Detecta si se presiona algun boton."""
 
@@ -147,7 +161,7 @@ class Timer(Scene):
             self.cambiar = True
             self.cronometro.kill()
             self.cronometro = None
-     
+
     def on_draw(self, screen):
         """ Informacion desplegada en pantalla."""
 
@@ -155,8 +169,16 @@ class Timer(Scene):
         screen.blit(self.bg, (0, 0))
 
         # Cronometro.
-        tiempo = fuentecronometro.render(self.time, 1, (255, 255, 255))
-        screen.blit(tiempo, (WIDTH/5, HEIGHT/3))
+        running = fuentecronometro.render(self.runningtime, 1, (255, 255, 255))
+        screen.blit(running, (WIDTH/5, HEIGHT/3))
+
+        # Tiempos de vueltas.
+        tiempo1 = fuente.render("> 1: " + self.vuelta1, 1, (255, 255, 255))
+        tiempo2 = fuente.render("> 2: " + self.vuelta2, 1, (255, 255, 255))
+
+        screen.blit(tiempo1, (WIDTH/3, 5*HEIGHT/8))
+        screen.blit(tiempo2, (WIDTH/3, 6*HEIGHT/8))
+
 
     def once_pressed(self, key):
         """ Detecta si una tecla fue presionada una vez."""

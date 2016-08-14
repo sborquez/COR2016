@@ -11,12 +11,13 @@ import pygame
 from pygame.locals import *
 import sys
  
+pygame.init()
+
 WIDTH = 852
 HEIGHT = 480
-pygame.init()
 fuente = pygame.font.Font("recursos/fuentes/PressStart2P.ttf", 20)
 fuentecronometro = pygame.font.Font("recursos/fuentes/PressStart2P.ttf", 70)
-
+pygame.mouse.set_visible(False)
 
 class MainFrame:
     """Representa la ventana principal del juego.
