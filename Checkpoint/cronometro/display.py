@@ -15,8 +15,9 @@ pygame.init()
 
 WIDTH = 852
 HEIGHT = 480
-fuente = pygame.font.Font("recursos/fuentes/PressStart2P.ttf", 20)
-fuentecronometro = pygame.font.Font("recursos/fuentes/PressStart2P.ttf", 70)
+FULLSCREEN = True
+fuente = pygame.font.Font("recursos/fuentes/PressStart2P.ttf", int(WIDTH*0.02347))
+fuentecronometro = pygame.font.Font("recursos/fuentes/PressStart2P.ttf", int(WIDTH*0.082159))
 pygame.mouse.set_visible(False)
 
 class MainFrame:
@@ -33,6 +34,7 @@ class MainFrame:
         self.scene = None
         self.quit_flag = False
         self.clock = pygame.time.Clock()
+        pygame.display.toggle_fullscreen() 
  
     def loop(self):
         "Pone en funcionamiento el juego."

@@ -169,7 +169,12 @@ class Timer(Scene):
         screen.blit(self.bg, (0, 0))
 
         # Cronometro.
-        running = fuentecronometro.render(self.runningtime, 1, (255, 255, 255))
+        try:
+            tiempo = int(self.runningtime)
+            tiempo = cambiar_tiempo(tiempo)
+        except:
+            tiempo = self.runningtime
+        running = fuentecronometro.render(tiempo, 1, (255, 255, 255))
         screen.blit(running, (WIDTH/5, HEIGHT/3))
 
         # Tiempos de vueltas.
@@ -189,6 +194,21 @@ class Timer(Scene):
         if not pygame.key.get_pressed()[key]:
             self.pressed = False
         return False
+
+
+2323
+
+def cambiar_tiempo(tiempo):
+    decisegundos = str(tiempo%10)
+    segundos = (tiempo/10)%100
+    minutos = tiempo/1000
+    if segundos/10 == 0:
+        segundos = "0" + str(segundos) 
+    if minutos/10 == 0:
+        minutos = "0" + str(minutos) 
+
+    cronometro = "{0}:{1}:{2}".format(minutos,segundos,decisegundos)
+    return cronometro
 
 if __name__ == '__main__':
     Main = MainFrame(title="Cronometro")

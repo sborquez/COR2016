@@ -10,7 +10,7 @@ import serial
 import time
 import os
 
-TEST = True
+TEST = False
 
 
 class Arduino:
@@ -34,7 +34,7 @@ class Arduino:
 
         # Diferenciacion entre sistemas windows y linux
         COM = {"nt": "COM",
-               "posix": "/dev/ttyACM"}
+               "posix": "/dev/ttyUSB"}
 
         # Prueba conectarse con cualquera de los puertos
         for num in xrange(10):
