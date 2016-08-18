@@ -195,9 +195,6 @@ class Timer(Scene):
             self.pressed = False
         return False
 
-
-2323
-
 def cambiar_tiempo(tiempo):
     decisegundos = str(tiempo%10)
     segundos = (tiempo/10)%100
@@ -207,7 +204,7 @@ def cambiar_tiempo(tiempo):
     if minutos/10 == 0:
         minutos = "0" + str(minutos) 
 
-    cronometro = "{0}:{1}:{2}".format(minutos,segundos,decisegundos)
+    cronometro = "{0}:{1}.{2}".format(minutos,segundos,decisegundos)
     return cronometro
 
 if __name__ == '__main__':

@@ -10,7 +10,7 @@ import serial
 import time
 import os
 
-TEST = False
+TEST = True
 
 
 class Arduino:
