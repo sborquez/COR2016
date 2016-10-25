@@ -52,9 +52,16 @@ class Arduino:
     def getdata(self):
         """Lee los datos mandados por serial."""
         if self.conectado:
+            if TEST:
+                time.sleep(0.05)
             return self.arduinoPort.readline().strip()
         return "No conectado"
 
+    def restart(self):
+        if TEST:
+            print 'r'
+        else:
+            self.arduinoPort.write('r')
     def kill(self):
         """Termina la conexion por serial."""
         if self.conectado:

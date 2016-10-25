@@ -65,7 +65,7 @@ class Menu(Scene):
         else:
             self.punteroy = 6*HEIGHT/8
 
-    def on_event(self):
+    def on_event(self, event):
         """ Si se selecciona en conectar o en salir hacer algo"""
 
         # Intecambio entre opciones a travez del teclado.
@@ -153,9 +153,6 @@ class Timer(Scene):
             self.runningtime = self.cronometro.getdata()
             if len(self.runningtime) == 0:
                 #if self.vuelta1 != "-" and self.vuelta2 != "-":
-                self.vuelta1 = "-"
-                self.vuelta2 = "-"
-                self.backtime = "0"
                 self.runningtime = self.backtime
             
 
@@ -171,15 +168,23 @@ class Timer(Scene):
             else:
                 self.backtime = self.runningtime
 
-    def on_event(self):
+    def on_event(self, evento):
         """ Detecta si se presiona algun boton."""
 
         # Cambiar estado de escena para volver a la escena principal.
         # Borrar puntero a Arduino.
+
+        if self.once_pressed(pygame.K_SPACE):
+            self.vuelta1 = "-"
+            self.vuelta2 = "-"
+            self.backtime = "0"
+            self.cronometro.restart()
+
         if self.once_pressed(pygame.K_BACKSPACE):
             self.cambiar = True
             self.cronometro.kill()
             self.cronometro = None
+
 
     def on_draw(self, screen):
         """ Informacion desplegada en pantalla."""

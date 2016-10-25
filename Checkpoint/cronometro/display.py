@@ -38,7 +38,7 @@ class MainFrame:
  
     def loop(self):
         "Pone en funcionamiento el juego."
- 
+    
         while not self.quit_flag:
             time = self.clock.tick(60)
              
@@ -54,7 +54,7 @@ class MainFrame:
                         pygame.display.toggle_fullscreen() 
  
             # detecta eventos
-            self.scene.on_event()
+            self.scene.on_event(self.boton)
  
             # actualiza la escena
             self.scene.on_update()
