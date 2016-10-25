@@ -13,8 +13,8 @@ import sys
  
 pygame.init()
 
-WIDTH = 852
-HEIGHT = 480
+WIDTH = 1280
+HEIGHT = 720
 FULLSCREEN = True
 fuente = pygame.font.Font("recursos/fuentes/PressStart2P.ttf", int(WIDTH*0.02347))
 fuentecronometro = pygame.font.Font("recursos/fuentes/PressStart2P.ttf", int(WIDTH*0.082159))

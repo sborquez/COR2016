@@ -1,4 +1,4 @@
-"""
+b"""
 [main.py]
 Autor: Sebastian Borquez G - COR2016
 Fecha: 08/2016
@@ -78,7 +78,7 @@ class Menu(Scene):
         # Seleccion de opcion a travez del teclado.
         if self.once_pressed(pygame.K_SPACE):
             if self.opciones == 0:
-                self.cronometro = Arduino(9600)
+                self.cronometro = Arduino(57600)
                 if self.cronometro.conectado:
                     self.arduino_connected = "ok"
                 else:
@@ -144,14 +144,33 @@ class Timer(Scene):
         if self.cambiar:
             self.cambiar = False
             self.director.change_scene(self.escenas["Menu"])
-
+            """
+            # Actualizar datos del cronometro.
+            else:
+                self.runningtime = self.cronometro.getdata()"""
         # Actualizar datos del cronometro.
         else:
             self.runningtime = self.cronometro.getdata()
             if len(self.runningtime) == 0:
+                #if self.vuelta1 != "-" and self.vuelta2 != "-":
+                self.vuelta1 = "-"
+                self.vuelta2 = "-"
+                self.backtime = "0"
                 self.runningtime = self.backtime
+            
+
+            elif self.runningtime == 'f':
+                self.vuelta1 = self.backtime
+                self.runningtime = self.backtime
+
+        
+            elif self.runningtime == 's':
+                self.vuelta2 = self.backtime
+                self.runningtime = self.backtime
+            
             else:
                 self.backtime = self.runningtime
+
     def on_event(self):
         """ Detecta si se presiona algun boton."""
 
@@ -174,12 +193,22 @@ class Timer(Scene):
             tiempo = cambiar_tiempo(tiempo)
         except:
             tiempo = self.runningtime
-        running = fuentecronometro.render(tiempo, 1, (255, 255, 255))
-        screen.blit(running, (WIDTH/5, HEIGHT/3))
+        try:
+            running = fuentecronometro.render(tiempo, 1, (255, 255, 255))
+            screen.blit(running, (WIDTH/5, HEIGHT/3))
+        except ValueError:
+            print tiempo
 
         # Tiempos de vueltas.
-        tiempo1 = fuente.render("> 1: " + self.vuelta1, 1, (255, 255, 255))
-        tiempo2 = fuente.render("> 2: " + self.vuelta2, 1, (255, 255, 255))
+        try:
+            tiempo1 = fuente.render("> 1: " + cambiar_tiempo(int(self.vuelta1)), 1, (255, 255, 255))
+        except ValueError:
+            tiempo1 = fuente.render("> 1: " + self.vuelta1, 1, (255, 255, 255))
+
+        try:
+            tiempo2 = fuente.render("> 2: " + cambiar_tiempo(int(self.vuelta2)), 1, (255, 255, 255))
+        except ValueError:
+            tiempo2 = fuente.render("> 2: " + self.vuelta2, 1, (255, 255, 255))
 
         screen.blit(tiempo1, (WIDTH/3, 5*HEIGHT/8))
         screen.blit(tiempo2, (WIDTH/3, 6*HEIGHT/8))
@@ -204,7 +233,7 @@ def cambiar_tiempo(tiempo):
     if minutos/10 == 0:
         minutos = "0" + str(minutos) 
 
-    cronometro = "{0}:{1}.{2}".format(minutos,segundos,decisegundos)
+    cronometro = "{0}:{1}:{2}".format(minutos,segundos,decisegundos)
     return cronometro
 
 if __name__ == '__main__':
